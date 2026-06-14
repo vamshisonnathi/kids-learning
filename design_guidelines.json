@@ -1,0 +1,129 @@
+{
+  "project_name": "MathQuest: 5th Grade Adaptive Platform",
+  "design_philosophy": {
+    "student": {
+      "theme": "Adventure / Treasure Map",
+      "core_values": ["Playful", "Encouraging", "Exploratory"],
+      "visual_style": "Cartoon, Vibrant, Rounded, 'Juicy' UI"
+    },
+    "teacher": {
+      "theme": "Command Center / Tactical",
+      "core_values": ["Clarity", "Efficiency", "Insight-Driven"],
+      "visual_style": "Clean, High-Contrast, Data-Dense, Swiss-Style"
+    }
+  },
+  "typography": {
+    "font_family_headings_student": "Nunito, 'Comic Neue', sans-serif",
+    "font_family_headings_teacher": "Inter, sans-serif",
+    "font_family_body": "Inter, sans-serif",
+    "weights": {
+      "student_heading": "800",
+      "teacher_heading": "600",
+      "body": "400"
+    }
+  },
+  "colors": {
+    "student_palette": {
+      "background": "#E0F7FA",
+      "ocean_bg": "#4FC3F7",
+      "island_sand": "#FFF59D",
+      "path_locked": "#B0BEC5",
+      "path_unlocked": "#8D6E63",
+      "node_mastered": "#66BB6A",
+      "node_locked": "#CFD8DC",
+      "node_current": "#FFCA28",
+      "text_primary": "#01579B"
+    },
+    "teacher_palette": {
+      "background": "#F8FAFC",
+      "surface": "#FFFFFF",
+      "primary": "#0F172A",
+      "success_green": "#10B981",
+      "warning_orange": "#F59E0B",
+      "danger_red": "#EF4444",
+      "locked_grey": "#94A3B8",
+      "text_primary": "#1E293B",
+      "text_secondary": "#64748B"
+    }
+  },
+  "layout_strategies": {
+    "student_map": {
+      "type": "Canvas / Scrollable Area",
+      "structure": "Absolute positioning of nodes (Islands) connected by SVG paths (Bezier curves). Background is a repeating water pattern or generated SVG waves.",
+      "node_style": "Circular or irregular 'island' shapes, 64px-96px size, bouncing hover effect.",
+      "spacing": "Loose, scattered to mimic a real map archipelago."
+    },
+    "teacher_dashboard": {
+      "type": "Bento Grid / Dense Data",
+      "structure": "Sidebar navigation, Top KPI cards, Main Data Table/Heatmap.",
+      "density": "Compact. Use 'h-8' or 'h-10' for table rows. Minimize whitespace to show more data."
+    }
+  },
+  "components": {
+    "MapNode": {
+      "description": "Represents a skill (TEKS standard). Visual state changes based on status (Locked, Open, Mastered).",
+      "states": {
+        "locked": "Greyscale, opacity 50%, Lock icon overlay.",
+        "open": "Full color, bouncing animation, pulsing ring.",
+        "mastered": "Green checkmark badge, gold border, star rating visible."
+      },
+      "interaction": "Click to open 'Mission Modal' (Skill details)."
+    },
+    "TeacherTable": {
+      "description": "Main view for class progress.",
+      "features": ["Sortable columns", "Color-coded mastery cells", "Sticky header", "Row click for student detail"],
+      "special_columns": ["Anxiety Flag (Icon)", "Error Pattern (Badge)"]
+    },
+    "ErrorPatternBadge": {
+      "description": "Visual tag for error types.",
+      "variants": {
+        "CONCEPTUAL": "bg-purple-100 text-purple-700 border-purple-200",
+        "PROCEDURAL": "bg-blue-100 text-blue-700 border-blue-200",
+        "CARELESS": "bg-yellow-100 text-yellow-700 border-yellow-200",
+        "VOCABULARY": "bg-pink-100 text-pink-700 border-pink-200",
+        "PREREQ_GAP": "bg-red-100 text-red-700 border-red-200"
+      }
+    }
+  },
+  "motion": {
+    "student": {
+      "hover": "scale-110 rotate-3 transition-spring",
+      "enter": "pop-in-up duration-500",
+      "path_draw": "draw-svg-path duration-1000"
+    },
+    "teacher": {
+      "hover": "bg-slate-100 transition-colors duration-200",
+      "modal": "fade-in-zoom-out duration-200"
+    }
+  },
+  "assets": {
+    "icons": {
+      "library": "lucide-react",
+      "recommendations": {
+        "map_nodes": "Use 'MapPin', 'Star', 'Lock', 'Unlock', 'Trophy', 'Skull' (for difficult nodes).",
+        "teacher_ui": "Use 'LayoutDashboard', 'Users', 'TrendingUp', 'AlertTriangle', 'FileText'."
+      }
+    },
+    "images": {
+      "background_texture": "https://images.unsplash.com/photo-1618949940755-36972997808a?auto=format&fit=crop&w=1920&q=80 (Use with overlay/blur for texture if needed, primarily rely on CSS patterns)",
+      "pirate_ship_decoration": "https://images.unsplash.com/photo-1735063152147-8ecdc70a85b2?auto=format&fit=crop&w=500&q=80 (Use as avatar or decorative sticker)"
+    }
+  },
+  "universal_guidelines": [
+    "Use 'data-testid' on all interactive elements.",
+    "Do not use gradients for text legibility, use solid backgrounds with high contrast.",
+    "For the student map, ensure 'islands' are clickable areas (min 44x44px).",
+    "Teacher dashboard must not require scrolling for key metrics (Keep 'Above the fold').",
+    "Use 'sonner' for all toast notifications (Achievements for kids, System alerts for teachers).",
+    "Use Shadcn UI components for Teacher Dashboard interactions (Dialog, Dropdown, Table).",
+    "Custom build the Student Map using relative/absolute positioning within a specialized container."
+  ],
+  "instructions_to_main_agent": {
+    "step_1": "Setup Tailwind theme colors for 'student' and 'teacher' modes.",
+    "step_2": "Create the 'StudentLayout' (Adventure Theme) and 'TeacherLayout' (Admin Theme) as separate wrapper components.",
+    "step_3": "Build the 'SkillGraph' data structure (20 nodes with dependencies) in a mock database/JSON.",
+    "step_4": "Implement the 'MapCanvas' component. Use an SVG layer for drawing connecting lines (paths) between absolute positioned div nodes (Islands).",
+    "step_5": "Build the 'TeacherDashboard' using Shadcn Table. Mock data for 15-20 students.",
+    "step_6": "Add the 'StudentDetail' view for teachers to drill down into error patterns."
+  }
+}

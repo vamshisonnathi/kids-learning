@@ -1,0 +1,576 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CSS VARIABLES - Student & Teacher Themes
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* Student Adventure Theme */
+    --student-bg: #E0F7FA;
+    --student-ocean: #4FC3F7;
+    --student-ocean-deep: #0288D1;
+    --student-island-sand: #FFF59D;
+    --student-path-locked: #B0BEC5;
+    --student-path-unlocked: #8D6E63;
+    --student-node-mastered: #66BB6A;
+    --student-node-locked: #CFD8DC;
+    --student-node-current: #FFCA28;
+    --student-node-approaching: #FF8A65;
+    --student-text: #01579B;
+    
+    /* Teacher Command Center Theme */
+    --teacher-bg: #F8FAFC;
+    --teacher-surface: #FFFFFF;
+    --teacher-primary: #0F172A;
+    --teacher-success: #10B981;
+    --teacher-warning: #F59E0B;
+    --teacher-danger: #EF4444;
+    --teacher-locked: #94A3B8;
+    --teacher-text: #1E293B;
+    --teacher-text-secondary: #64748B;
+    
+    /* Shadcn defaults */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Student view uses Nunito */
+.student-theme {
+    font-family: 'Nunito', sans-serif;
+    background: var(--student-bg);
+}
+
+/* Teacher view uses Inter */
+.teacher-theme {
+    font-family: 'Inter', sans-serif;
+    background: var(--teacher-bg);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   STUDENT ADVENTURE MAP STYLES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.adventure-map {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #87CEEB 0%, #4FC3F7 30%, #0288D1 100%);
+    overflow: hidden;
+}
+
+.adventure-map::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(ellipse at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+/* Water wave animation */
+.water-waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23039be5' fill-opacity='0.3' d='M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,213.3C672,224,768,192,864,165.3C960,139,1056,117,1152,128C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+    animation: wave 8s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-20px); }
+}
+
+/* Island node styles */
+.island-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 10;
+}
+
+.island-node:hover {
+    transform: scale(1.1) rotate(2deg);
+    z-index: 20;
+}
+
+.island-body {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.island-body.mastered {
+    background: linear-gradient(145deg, #81C784, #4CAF50);
+    border: 4px solid #FFD700;
+    color: white;
+}
+
+.island-body.open {
+    background: linear-gradient(145deg, #FFE082, #FFCA28);
+    border: 4px solid #FF9800;
+    color: #5D4037;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.island-body.approaching {
+    background: linear-gradient(145deg, #FFAB91, #FF7043);
+    border: 4px solid #E64A19;
+    color: white;
+}
+
+.island-body.locked {
+    background: linear-gradient(145deg, #CFD8DC, #90A4AE);
+    border: 4px solid #78909C;
+    color: #546E7A;
+    opacity: 0.7;
+}
+
+.island-body.blocked {
+    background: linear-gradient(145deg, #EF9A9A, #E57373);
+    border: 4px solid #D32F2F;
+    color: white;
+}
+
+.island-body.diagnostic-gap {
+    background: linear-gradient(145deg, #EF5350, #C62828);
+    border: 4px solid #FF1744;
+    color: white;
+    animation: gap-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes gap-pulse {
+    0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(255, 23, 68, 0.5); transform: scale(1); }
+    50% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 14px rgba(255, 23, 68, 0); transform: scale(1.05); }
+}
+
+.island-badge.diagnostic-gap {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #FF1744;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    box-shadow: 0 2px 8px rgba(255, 23, 68, 0.6);
+}
+
+@keyframes slide-down {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.animate-slide-down {
+    animation: slide-down 0.5s ease-out forwards;
+}
+
+/* Student Home particles */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(251, 191, 36, 0.15);
+    animation: float-particle 8s ease-in-out infinite;
+}
+.particle-1 { width: 200px; height: 200px; top: 10%; left: 10%; animation-delay: 0s; }
+.particle-2 { width: 150px; height: 150px; top: 60%; right: 10%; animation-delay: 2s; }
+.particle-3 { width: 100px; height: 100px; top: 30%; right: 25%; animation-delay: 4s; }
+.particle-4 { width: 180px; height: 180px; bottom: 10%; left: 20%; animation-delay: 6s; }
+
+@keyframes float-particle {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.15; }
+    50% { transform: translateY(-30px) scale(1.1); opacity: 0.25; }
+}
+
+.island-body.grade4 {
+    width: 60px;
+    height: 60px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(255, 202, 40, 0.4); }
+    50% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 15px rgba(255, 202, 40, 0); }
+}
+
+.island-label {
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--student-text);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.island-teks {
+    font-size: 10px;
+    color: #64748B;
+    margin-top: 2px;
+}
+
+/* Status badge on island */
+.island-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.island-badge.mastered {
+    background: #4CAF50;
+    color: white;
+}
+
+.island-badge.locked {
+    background: #78909C;
+    color: white;
+}
+
+/* Path connections between islands */
+.map-paths {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.map-path {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 10 5;
+}
+
+.map-path.unlocked {
+    stroke: #8D6E63;
+    opacity: 0.8;
+}
+
+.map-path.locked {
+    stroke: #B0BEC5;
+    opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TEACHER DASHBOARD STYLES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.teacher-dashboard {
+    min-height: 100vh;
+    background: var(--teacher-bg);
+    padding: 24px;
+}
+
+.teacher-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.teacher-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--teacher-primary);
+}
+
+/* KPI Cards */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.kpi-card {
+    background: var(--teacher-surface);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--teacher-primary);
+}
+
+.kpi-label {
+    font-size: 14px;
+    color: var(--teacher-text-secondary);
+    margin-top: 4px;
+}
+
+/* Data Table */
+.data-table {
+    background: var(--teacher-surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table-row:hover {
+    background: #F1F5F9;
+}
+
+/* Status indicators */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-dot.mastered { background: var(--teacher-success); }
+.status-dot.approaching { background: var(--teacher-warning); }
+.status-dot.struggling { background: var(--teacher-danger); }
+.status-dot.locked { background: var(--teacher-locked); }
+
+/* Error Pattern Badges */
+.error-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.error-badge.CONCEPTUAL {
+    background: #F3E8FF;
+    color: #7C3AED;
+    border: 1px solid #DDD6FE;
+}
+
+.error-badge.PROCEDURAL {
+    background: #DBEAFE;
+    color: #2563EB;
+    border: 1px solid #BFDBFE;
+}
+
+.error-badge.CARELESS {
+    background: #FEF3C7;
+    color: #D97706;
+    border: 1px solid #FDE68A;
+}
+
+.error-badge.VOCABULARY {
+    background: #FCE7F3;
+    color: #DB2777;
+    border: 1px solid #FBCFE8;
+}
+
+.error-badge.PREREQ_GAP {
+    background: #FEE2E2;
+    color: #DC2626;
+    border: 1px solid #FECACA;
+}
+
+/* Anxiety indicator */
+.anxiety-indicator {
+    display: inline-flex;
+    align-items: center;
+    color: var(--teacher-warning);
+    font-weight: 600;
+}
+
+/* Progress bar */
+.progress-bar {
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-fill.high { background: var(--teacher-success); }
+.progress-fill.medium { background: var(--teacher-warning); }
+.progress-fill.low { background: var(--teacher-danger); }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   STUDENT SELECTOR / HOME
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.student-selector {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.selector-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 12px;
+}
+
+.selector-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 48px;
+}
+
+.student-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.student-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.student-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.student-avatar {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.student-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 8px;
+}
+
+.student-progress-text {
+    font-size: 14px;
+    color: #64748B;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHADCN OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .student-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .selector-title {
+        font-size: 32px;
+    }
+}
