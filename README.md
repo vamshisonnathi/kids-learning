@@ -1,6 +1,4 @@
-cd kids-learning
 
-cat > README.md << 'EOF'
 # Kids Learning — AI Adaptive Learning Engine
 
 Adaptive learning system for 5th grade math built with Claude API.
